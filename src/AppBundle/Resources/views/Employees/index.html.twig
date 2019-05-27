@@ -1,0 +1,17 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}PLPD - Employees{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>
+            Employees
+            {% if is_granted("ROLE_COMMAND") or app.user.ispolicetrainingofficer %}
+            <span class="pull-right">
+                <a href="{{ path("app_employees_create") }}" class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> New Employee</a>
+            </span>
+            {% endif %}
+        </h1>
+    </div>
+    {{ grid|raw }}
+{% endblock %}

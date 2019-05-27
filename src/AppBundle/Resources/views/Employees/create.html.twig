@@ -1,0 +1,18 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}PLPD - Create employee{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>
+            Create employee
+        </h1>
+    </div>
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary" type="submit">
+        <i class="fa fa-save"></i> Create employee
+    </button>
+    {{ form_end(form) }}
+{% endblock %}

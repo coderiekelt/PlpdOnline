@@ -1,0 +1,17 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}PLPD - Notifications{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>
+            Notifications
+        </h1>
+    </div>
+    {% for notification in notifications %}
+        <div class="well">
+            {{ notification.content }}<br>
+            <a href="{{ notification.url }}" style="font-size: 8pt;">Click here to see more</a>
+        </div>
+    {% endfor %}
+{% endblock %}

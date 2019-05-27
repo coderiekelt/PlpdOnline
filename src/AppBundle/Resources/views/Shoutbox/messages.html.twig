@@ -1,0 +1,18 @@
+{% for message in messages %}
+    <div class="itemdiv dialogdiv">
+        <div class="user">
+            <img alt="Avatar" src="{{ asset("ace/assets/avatars/avatar2.png") }}" />
+        </div>
+        <div class="body">
+            <div class="time">
+                <i class="ace-icon fa fa-clock-o"></i>
+                <span class="green">{{ message.datetime|date("Y-m-d H:i:s") }}</span>
+            </div>
+
+            <div class="name">
+                <a href="#">{{ message.user.username }}</a>
+            </div>
+            <div class="text">{{ message.message }}</div>
+        </div>
+    </div>
+{% endfor %}

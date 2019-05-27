@@ -1,0 +1,523 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}PLPD - {{ user.username}}{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>
+            {{ user.username }}
+            {% if user.hasRole("ROLE_ADMINISTRATOR") %}
+                <div class="label label-danger">
+                    <div class="inline position-relative">
+                        <span class="white">Administrator</span>
+                    </div>
+                </div>
+            {% endif %}
+            {% if user.hasRole("ROLE_SUPERVISOR") %}
+                <div class="label label-success">
+                    <div class="inline position-relative">
+                        <span class="white">Police Supervisor</span>
+                    </div>
+                </div>
+            {% endif %}
+            {% if user.hasRole("ROLE_COMMAND") %}
+                <div class="label label-warning">
+                    <div class="inline position-relative">
+                        <span class="white">Police Command</span>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="label label-info">
+                <div class="inline position-relative">
+                    <span class="white">{{ user.rank }}</span>
+                </div>
+            </div>
+            {% for division in divisions %}
+                <div class="label label-primary">
+                    <div class="inline position-relative">
+                        <span class="white">{{ division }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </h1>
+    </div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#main" aria-controls="main" role="tab" data-toggle="tab">Information</a></li>
+        <li role="presentation"><a href="#commendations" aria-controls="commendations" role="tab" data-toggle="tab">Commendations</a></li>
+        {% if is_granted("ROLE_SUPERVISOR") %}
+            <li role="presentation"><a href="#infractions" aria-controls="infractions" role="tab" data-toggle="tab">Infractions</a></li>
+            <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
+        {% endif %}
+        {% if is_granted("ROLE_SUPERVISOR") or user.id == app.user.id %}
+            <li role="presentation"><a href="#activity" aria-controls="activity" role="tab" data-toggle="tab">Activity</a></li>
+        {% endif %}
+        {% if is_granted("ROLE_COMMAND") or user.id == app.user.id %}
+            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+            <li role="presentation"><a href="#password" aria-controls="password" role="tab" data-toggle="tab">Password</a></li>
+        {% endif %}
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="main">
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- HINT: It's friends, not like you have any tho. -->
+                    <div style="width: 100%; background-color: #3A87AD; height: 50px; color: white;">
+                        <h1 style="padding-top: 5px; padding-left: 5px;">
+                            <i class="fa fa-users fa-fw"></i> ???
+                        </h1>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div style="width: 100%; background-color: #82AF6F; height: 50px; color: white;">
+                        <h1 style="padding-top: 5px; padding-left: 5px;">
+                            <i class="fa fa-trophy fa-fw"></i> {{ user.commendations|length }} commendations
+                        </h1>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div style="width: 100%; background-color: #D15B47; height: 50px; color: white;">
+                        <h1 style="padding-top: 5px; padding-left: 5px;">
+                            <i class="fa fa-eye fa-fw"></i> {{ user.views }} views
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="commendations">
+            <div class="widget-box">
+                <div class="widget-header">
+                    <h4 class="widget-title lighter smaller">
+                        <i class="ace-icon fa fa-trophy blue"></i>
+                        Commendations
+                    </h4>
+                    <div class="widget-toolbar">
+                        {% if is_granted('ROLE_SUPERVISOR') %}
+                            <a onclick="$('.modalCommendation').modal('show')" id="addCommendation">
+                                <i class="ace-icon fa fa-plus"></i>
+                            </a>
+                        {% endif %}
+                        <a href="#" data-action="collapse">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="widget-body">
+                    {% if user.commendations|length > 0 %}
+                        <div class="widget-main no-padding">
+                            <table class="table-bordered table-striped table">
+                                <thead>
+                                <tr>
+                                    <th>Reason</th>
+                                    <th>Supervisor</th>
+                                    <th>Date</th>
+                                    {% if is_granted("ROLE_COMMAND") %}
+                                    <th>Actions</th>
+                                    {% endif %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for commendation in user.commendations %}
+                                    <tr>
+                                        <td>{{ commendation.reason }}</td>
+                                        <td>{{ commendation.supervisor.username }}</td>
+                                        <td>{{ commendation.datetime|date("Y-m-d") }}</td>
+                                        {% if is_granted("ROLE_COMMAND") %}
+                                            <td>
+                                                <a href="{{ path("app_ajax_deletecommendation", {id: commendation.id, tab: "commendations"}) }}" class="btn btn-danger btn-xs pull-right"><i class="fa fa-fw fa-trash"></i></a>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="widget-main">
+                            No commendations found for this employee.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if is_granted("ROLE_SUPERVISOR") or user.id == app.user.id %}
+            <div role="tabpanel" class="tab-pane" id="infractions">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h4 class="widget-title lighter smaller">
+                            <i class="ace-icon fa fa-exclamation blue"></i>
+                            Infractions
+                        </h4>
+                        <div class="widget-toolbar">
+                            {% if is_granted('ROLE_SUPERVISOR') %}
+                                <a onclick="$('.modalInfraction').modal('show')" id="addInfraction">
+                                    <i class="ace-icon fa fa-plus"></i>
+                                </a>
+                            {% endif %}
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        {% if user.infractions|length > 0 %}
+                            <div class="widget-main no-padding">
+                                <table class="table-bordered table-striped table">
+                                    <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Reason</th>
+                                        <th>Supervisor</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for infraction in user.infractions %}
+                                        <tr>
+                                            <td>{{ infraction.type }}</td>
+                                            <td>{{ infraction.reason }}</td>
+                                            <td>{{ infraction.supervisor.username }}</td>
+                                            <td>{{ infraction.datetime|date("Y-m-d") }}</td>
+                                            <td><a href="{{ infraction.thread }}" class="btn btn-info btn-xs"><i class="fa fa-fw fa-arrow-right"></i></a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="widget-main">
+                                No infractions found for this employee.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if is_granted("ROLE_SUPERVISOR") %}
+            <div role="tabpanel" class="tab-pane" id="notes">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h4 class="widget-title lighter smaller">
+                            <i class="ace-icon fa fa-comment blue"></i>
+                            Notes
+                        </h4>
+                        <div class="widget-toolbar">
+                            {% if is_granted('ROLE_SUPERVISOR') %}
+                                <a onclick="$('.modalNote').modal('show')" id="addNote">
+                                    <i class="ace-icon fa fa-plus"></i>
+                                </a>
+                            {% endif %}
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        {% if user.notes|length > 0 %}
+                            <div class="widget-main no-padding">
+                                <table class="table-bordered table-striped table">
+                                    <thead>
+                                    <tr>
+                                        <th>Note</th>
+                                        <th>Supervisor</th>
+                                        <th>Date</th>
+                                        {% if is_granted("ROLE_COMMAND") %}
+                                            <th>Actions</th>
+                                        {% endif %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for note in user.notes %}
+                                        <tr>
+                                            <td>{{ note.reason }}</td>
+                                            <td>{{ note.supervisor.username }}</td>
+                                            <td>{{ note.datetime|date("Y-m-d") }}</td>
+                                            {% if is_granted("ROLE_COMMAND") %}
+                                                <td>
+                                                    <a href="{{ path("app_ajax_deletenote", {id: note.id, tab: "notes"}) }}" class="btn btn-danger btn-xs pull-right"><i class="fa fa-fw fa-trash"></i></a>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="widget-main">
+                                No notes found for this employee.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div role="tabpanel" class="tab-pane" id="activity">
+            <div class="widget-box">
+                <div class="widget-header">
+                    <h4 class="widget-title lighter smaller">
+                        <i class="ace-icon fa fa-comment blue"></i>
+                        Inactivity notices
+                    </h4>
+                    <div class="widget-toolbar">
+                        {% if user.id == app.user.id %}
+                            <a onclick="$('.modalInactivity').modal('show')" id="addNote">
+                                <i class="ace-icon fa fa-plus"></i>
+                            </a>
+                        {% endif %}
+                        <a href="#" data-action="collapse">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="widget-body">
+                    {% if user.inactivities|length > 0 %}
+                        <div class="widget-main no-padding">
+                            <table class="table-bordered table-striped table">
+                                <thead>
+                                <tr>
+                                    <th>Reason</th>
+                                    <th>Starts</th>
+                                    <th>Ends</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for inactivity in user.inactivities %}
+                                    <tr>
+                                        <td>{{ inactivity.reason }}</td>
+                                        <td>{{ inactivity.startdate|date("Y-m-d") }}</td>
+                                        <td>{{ inactivity.enddate|date("Y-m-d") }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="widget-main">
+                            No inactivity notices found for this employee.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if is_granted("ROLE_COMMAND") or user.id == app.user.id %}
+            {% form_theme form 'bootstrap_3_layout.html.twig' %}
+            <div role="tabpanel" class="tab-pane" id="settings">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save employee</button>
+                {{ form_end(form) }}
+            </div>
+            <div role="tabpanel" class="tab-pane" id="password">
+                <div class="alert alert-info"><i class="fa fa-info fa-fw"></i><b>Hint:</b> type "random" without quotes to generate a random password, the password will be shown to you after generating it!</div>
+                <label for="txtPassword">Enter a new password:</label>
+                <input type="password" id="txtPassword" class="form-control" /><br>
+                <button class="btnPassword btn btn-primary"><i class="fa fa-save"></i> Save password</button>
+            </div>
+        {% endif %}
+    </div>
+    <div class="modal modalInfraction fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Infraction</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Type:</p>
+                    <input type="text" id="txtInfractionType" class="form-control" />
+                    <p>Complaint (leave empty if no thread):</p>
+                    <input type="text" id="txtInfractionThread" class="form-control" />
+                    <p>Reason:</p>
+                    <textarea name="txtInfraction" id="txtInfraction" cols="30" rows="10" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                    <button type="button" class="btn btn-primary btnInfraction"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modalCommendation fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Commendation</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Reason:</p>
+                    <textarea name="txtCommendation" id="txtCommendation" cols="30" rows="10" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                    <button type="button" class="btn btn-primary btnCommendation"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modalNote fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Note</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Note:</p>
+                    <textarea name="txtNote" id="txtNote" cols="30" rows="10" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                    <button type="button" class="btn btn-primary btnNote"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modalRank fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Set Rank</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Rank:</p>
+                    <input type="text" id="txtRank" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                    <button type="button" class="btn btn-primary btnRank"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modalInactivity fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">File Inactivity Notice</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Start date:</p>
+                    <input type="text" id="txtDateStart" class="form-control date-picker" />
+                    <p>End date:</p>
+                    <input type="text" id="txtDateEnd" class="form-control date-picker" />
+                    <p>Reason:</p>
+                    <textarea name="txtInactivity" id="txtInactivity" cols="30" rows="10" class="form-control"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                    <button type="button" class="btn btn-primary btnInactivity"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('.date-picker').datepicker({
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            // I see you are looking at my JavaScript... dont bother making requests if you cant see the tabs or text fields! 2 factor ACL.
+
+            $(".btnPassword").click(function() {
+                var pass = $("#txtPassword").prop("value");
+
+                $.ajax({
+                    url: "/ajax/password/{{ user.id }}",
+                    data: {password: pass},
+                    type: "post",
+                    success: function(data) {
+                        console.log(data);
+                        if (data == "nope")
+                        {
+                            swal("Oh hello.", "Just what do you think you are doing?", "error");
+                            return;
+                        }
+
+                        if (pass == "random")
+                        {
+                            swal("Random password generated", data, "success");
+                        } else {
+                            swal("Password changed", "The password has successfully been set to the provided password.", "success");
+                        }
+                    }
+                });
+            });
+
+            $(".btnInactivity").click(function() {
+                var reason = $("#txtInactivity").prop("value");
+                var start = $("#txtDateStart").prop("value");
+                var end = $("#txtDateEnd").prop("value");
+
+                $.ajax({
+                    url: "/ajax/inactivity/{{ user.id }}",
+                    data: {reason: reason, start: start, end: end},
+                    type: "post",
+                    success: function() {
+                        window.location.href = "/employees/view/{{ user.id }}/activity"
+                    }
+                });
+            });
+
+            $(".btnNote").click(function() {
+                var reason = $("#txtNote").prop("value");
+                $.ajax({
+                    url: "/ajax/note/{{ user.id }}",
+                    data: {reason: reason},
+                    type: "post",
+                    success: function() {
+                        window.location.href = "/employees/view/{{ user.id }}/notes"
+                    }
+                });
+            });
+
+            $(".btnCommendation").click(function() {
+                var reason = $("#txtCommendation").prop("value");
+                $.ajax({
+                    url: "/ajax/commendation/{{ user.id }}",
+                    data: {reason: reason},
+                    type: "post",
+                    success: function() {
+                        window.location.href = "/employees/view/{{ user.id }}/commendations"
+                    }
+                });
+            });
+
+            $(".btnInfraction").click(function() {
+                var reason = $("#txtInfraction").prop("value");
+                var ctype = $("#txtInfractionType").prop("value");
+                var complaint = $("#txtInfractionThread").prop("value");
+
+                $.ajax({
+                    url: "/ajax/infraction/{{ user.id }}",
+                    data: {reason: reason, thread: complaint, type: ctype},
+                    type: "post",
+                    success: function() {
+                        window.location.href = "/employees/view/{{ user.id }}/infractions"
+                    }
+                });
+            });
+
+            {% if user.hasRole("ROLE_SUPERVISOR") %}
+            $("#form_supervisor").prop("checked", "checked");
+            {% endif %}
+
+            {% if user.hasRole("ROLE_ADMINISTRATOR") %}
+            $("#form_administrator").prop("checked", "checked");
+            {% endif %}
+
+            {% if user.hasRole("ROLE_COMMAND") %}
+            $("#form_command").prop("checked", "checked");
+            {% endif %}
+
+            {% if jumpto != "main" %}
+            $("a[aria-controls={{ jumpto }}]").trigger("click");
+            {% endif %}
+        });
+    </script>
+{% endblock %}

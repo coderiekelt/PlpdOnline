@@ -1,0 +1,58 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}PLPD - Shoutbox{% endblock %}
+
+{% block body %}
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4 class="widget-title lighter smaller">
+                <i class="ace-icon fa fa-comment blue"></i>
+                Shoutbox
+            </h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <div class="dialogs" style="max-height: 800px; overflow: scroll;">
+                </div>
+                <form>
+                    <div class="form-actions">
+                        <div class="input-group">
+                            <input placeholder="Type your message here ..." type="text" class="form-control" id="shoutboxMessage" name="message" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-sm btn-info no-radius" id="btnSend" type="button">
+                                    <i class="ace-icon fa fa-share"></i>
+                                    Send
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.widget-main -->
+        </div><!-- /.widget-body -->
+    </div><!-- /.widget-box -->
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            function loadMessages()
+            {
+                $(".dialogs").load("{{ path("app_shoutbox_messages") }}");
+            }
+
+            $("#btnSend").click(function() {
+                $.ajax({
+                    url: "/shoutbox/post",
+                    data: {message: $("#shoutboxMessage").prop("value")},
+                    type: "post",
+                    success: function() {
+
+                    }
+                });
+            });
+
+            loadMessages();
+            setInterval(loadMessages, 3000);
+        });
+    </script>
+{% endblock %}

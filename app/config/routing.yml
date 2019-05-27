@@ -1,0 +1,26 @@
+academy:
+    resource: "@AcademyBundle/Controller/"
+    type:     annotation
+    prefix:   /academy
+
+applicant:
+    resource: "@ApplicantBundle/Controller/"
+    type:     annotation
+    prefix:   /applicant
+
+carreer:
+    resource: "@CareerBundle/Controller/"
+    type:     annotation
+    prefix:   /careers
+
+supervisor:
+    resource: "@SupervisorBundle/Controller/"
+    type:     annotation
+    prefix:   /supervisor
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

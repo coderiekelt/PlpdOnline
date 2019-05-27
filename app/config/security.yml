@@ -1,0 +1,36 @@
+# app/config/security.yml
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_EMPLOYEE: ROLE_USER
+        ROLE_SUPERVISOR: ROLE_EMPLOYEE
+        ROLE_COMMAND: ROLE_SUPERVISOR
+        ROLE_ADMINISTRATOR: ROLE_COMMAND
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
+
+    firewalls:
+        main:
+            pattern: ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+                # if you are using Symfony < 2.8, use the following config instead:
+                # csrf_provider: form.csrf_provider
+
+            logout:       true
+            anonymous:    true
+            switch_user: { role: ROLE_COMMAND, parameter: _switch }
+
+    access_control:
+        - { path: ^/steam, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/careers, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, role: ROLE_USER}
+        - { path: ^/admin/, role: ROLE_ADMIN }

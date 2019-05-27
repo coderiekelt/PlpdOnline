@@ -1,0 +1,73 @@
+{% extends "@Academy/base.html.twig" %}
+
+{% block title %}PLPD - {{ application.forumname }}{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>
+            {{ application.forumname }}
+            <small>Assigned to: {{ application.pto }}</small>
+            <span class="pull-right">
+            <a href="{{ path("academy_applications_assign", {application: application.id, pto: app.user.id}) }}" class="btn btn-primary btn-xs"><i class="fa fa-clipboard"></i> Assign to me</a>
+            <a href="{{ path("academy_applications_accept", {application: application.id}) }}" class="btn btn-success btn-xs"><i class="fa fa-check"></i> Accept</a>
+            <a href="{{ path("academy_applications_deny", {application: application.id}) }}" class="btn btn-danger btn-xs"><i class="fa fa-close"></i> Deny</a>
+        </span>
+        </h1>
+    </div>
+    <p>
+        <b>Forum name:</b><br>
+        {{ application.forumname }}
+    </p>
+    <p>
+        <b>Steam name:</b><br>
+        {{ application.steamname }}
+    </p>
+    <p>
+        <b>Steam ID:</b><br>
+        {{ application.steamid }}
+    </p>
+    <p>
+        <b>In-Character name:</b><br>
+        {{ application.rpname }}
+    </p>
+    <p>
+        <b>Date of birth:</b><br>
+        {{ application.dob }}
+    </p>
+    <p>
+        <b>E-mail address:</b><br>
+        {{ application.email }}
+    </p>
+    <p>
+        <b>Country:</b><br>
+        {{ application.country }}
+    </p>
+    <p>
+        <b>Do you own a (well) functioning microphone?</b><br>
+        {{ application.microphone }}
+    </p>
+    <p>
+        <b>Why are you applying to join the PLPD?</b><br>
+        {{ application.reasonApply }}
+    </p>
+    <p>
+        <b>Why should we choose you over other applicants?</b><br>
+        {{ application.reasonChoose }}
+    </p>
+    <p>
+        <b>Do you have any experience in law enforcement roleplay outside of PERPHeads? If so, please list.</b><br>
+        {{ application.experience }}
+    </p>
+    <p>
+        <b>What skills do you have that would benefit you as a Senior Officer of the PLPD?</b><br>
+        {{ application.skills }}
+    </p>
+    <p>
+        <b>Do you have any concerns you would like to express to the PTO reviewing your application?</b><br>
+        {{ application.concerns }}
+    </p>
+    <p>
+        <b>Would you like to provide us with any additional information related to your application?</b><br>
+        {{ application.information }}
+    </p>
+{% endblock %}

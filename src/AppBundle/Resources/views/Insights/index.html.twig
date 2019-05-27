@@ -1,0 +1,35 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}PLPD - Insights{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>
+            Insights
+        </h1>
+    </div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#activity" aria-controls="activity" role="tab" data-toggle="tab">Activity</a></li>
+        <li role="presentation"><a href="#commendations" aria-controls="commendations" role="tab" data-toggle="tab">Commendations</a></li>
+        <li role="presentation"><a href="#infractions" aria-controls="infractions" role="tab" data-toggle="tab">Infractions</a></li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane" id="activity">
+            {{ activity|raw }}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="commendations">
+            {{ commendation|raw }}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="infractions">
+            {{ infraction|raw }}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $("#commendations").trigger("click");
+            $("#activity").trigger("click");
+        })
+    </script>
+{% endblock %}

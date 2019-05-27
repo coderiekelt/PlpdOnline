@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>PLPD - Setup</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta charset="utf-8" />
+        <title>PLPD - Setup</title>
+        <meta name="description" content="User login page" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <link rel="stylesheet" href="{{ asset("ace/assets/css/bootstrap.css") }}" />
+        <link rel="stylesheet" href="{{ asset("ace/assets/css/font-awesome.css") }}" />
+        <link rel="stylesheet" href="{{ asset("ace/assets/css/ace-fonts.css") }}" />
+        <link rel="stylesheet" href="{{ asset("ace/assets/css/ace.css") }}" />
+        <link rel="stylesheet" href="{{ asset("ace/assets/css/ace-rtl.css") }}" />
+    </head>
+    <body>
+    <div class="container">
+        <h1>Paralake Police Department<br><small>Serve and Protect</small></h1>
+        <div class="alert alert-info">
+            <i class="fa fa-info fa-fw"></i>
+            We need your email so we can verify your account.
+        </div>
+        <div class="well">
+            We are sorry to bother you but we need some additional information in order to comply with Dutch laws and to improve your experience!<br>
+            {% form_theme form 'bootstrap_3_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save my details</button>
+            {{ form_end(form) }}
+            <br>
+            Thanks in advance!<br>
+            <br>
+            <b>Michelle Bowman</b> (Riekelt)<br>
+            Administrative Services
+        </div>
+    </div>
+    <script src="{{ asset("ace/assets/js/jquery.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/bootstrap.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/elements.scroller.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/elements.colorpicker.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/elements.fileinput.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/elements.typeahead.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/elements.wysiwyg.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/elements.spinner.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/elements.treeview.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/elements.wizard.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/elements.aside.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.ajax-content.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.touch-drag.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.sidebar.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.sidebar-scroll-1.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.submenu-hover.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.widget-box.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.settings.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.settings-rtl.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.settings-skin.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.widget-on-reload.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.searchbox-autocomplete.js") }}"></script>
+    <script type="text/javascript"> ace.vars['base'] = '..'; </script>
+    <script src="{{ asset("ace/assets/js/ace/elements.onpage-help.js") }}"></script>
+    <script src="{{ asset("ace/assets/js/ace/ace.onpage-help.js") }}"></script>
+    <script src="{{ asset("ace/docs/assets/js/rainbow.js") }}"></script>
+    <script src="{{ asset("ace/docs/assets/js/language/generic.js") }}"></script>
+    <script src="{{ asset("ace/docs/assets/js/language/html.js") }}"></script>
+    <script src="{{ asset("ace/docs/assets/js/language/css.js") }}"></script>
+    <script src="{{ asset("ace/docs/assets/js/language/javascript.js") }}"></script>
+    </body>
+</html>

@@ -1,0 +1,49 @@
+{% extends "@Applicant/base.html.twig" %}
+{% block title %}Dashboard{% endblock %}
+{% block body %}
+    <div class="page-header">
+        <h1>
+            My Career
+        </h1>
+    </div>
+    Hello {{ app.user.username }}! We are glad to see that you made it through the application process.<br>
+    There is still a couple of things that need to be done, you can see a checklist below with in it your progress to becoming a whitelisted Police Officer!<br>
+    <br>
+    {#Wtf is this thing bitching about#}
+    {% set applicant = app.user.applicantstatus %}
+    {% set step = applicant.step %}
+    {{ dump(applicant) }}
+    {{ dump(step) }}
+    {#{% if applicant.step is not defined %}#}
+        {#<h3 class="red">Either a bug occured or you are already an officer.</h3>#}
+    {#{% else %}#}
+        {#<h3>#}
+            {#<span class="green"><i class="fa fa-check fa-fw"></i></span>#}
+            {#Submit an application and get accepted#}
+        {#</h3>#}
+        {#<h3>#}
+            {#{% if applicant.step > 2 %}#}
+                {#<span class="green"><i class="fa fa-check fa-fw"></i></span>#}
+            {#{% else %}#}
+                {#<span class="red"><i class="fa fa-close fa-fw"></i></span>#}
+            {#{% endif %}#}
+            {#Complete the scenarios and have them approved#}
+        {#</h3>#}
+        {#<h3>#}
+            {#{% if applicant.step > 3 %}#}
+                {#<span class="green"><i class="fa fa-check fa-fw"></i></span>#}
+            {#{% else %}#}
+                {#<span class="red"><i class="fa fa-close fa-fw"></i></span>#}
+            {#{% endif %}#}
+            {#Go on a supervised patrol#}
+        {#</h3>#}
+        {#<h3>#}
+            {#{% if applicant.step > 4 %}#}
+                {#<span class="green"><i class="fa fa-check fa-fw"></i></span>#}
+            {#{% else %}#}
+                {#<span class="red"><i class="fa fa-close fa-fw"></i></span>#}
+            {#{% endif %}#}
+            {#Get your PLPD Connect status and whitelist updated#}
+        {#</h3>#}
+    {#{% endif %}#}
+{% endblock %}

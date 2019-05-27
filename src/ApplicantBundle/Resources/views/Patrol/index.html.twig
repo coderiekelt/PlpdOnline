@@ -1,0 +1,21 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}PLPD - Supervised Patrol{% endblock %}
+
+{% block body %}
+{% if app.user.applicantstatus.patrol == null %}
+    <h3 class="red">You have not yet scheduled a supervised patrol, would you like to do so now?</h3>
+    <a href="{{ path('applicant_patrol_schedule') }}" class="btn btn-lg btn-primary"><i class="fa fa-calendar"></i> Schedule a supervised patrol</a>
+{% else %}
+    {% if app.user.applicantstatus.patrol.status == "open" %}
+        <h3 class="green">You have already scheduled a supervised patrol, contact your PTO (see e-mail) for more information and changes.</h3>
+    {% endif %}
+    {% if app.user.applicantstatus.patrol.status == "failed" %}
+        <h3 class="red">You have failed on a previous supervised patrol, would you like to schedule a new one?</h3>
+        <a href="{{ path('applicant_patrol_schedule') }}" class="btn btn-lg btn-primary"><i class="fa fa-calendar"></i> Schedule a supervised patrol</a>
+    {% endif %}
+    {% if app.user.applicantstatus.patrol.status == "passed" %}
+        <h3 class="green">You have already completed this step.</h3>
+    {% endif %}
+{% endif %}
+{% endblock %}

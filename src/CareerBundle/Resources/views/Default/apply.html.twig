@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>PLPD - Application</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>PLPD - Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" href="{{ asset("ace/assets/css/bootstrap.css") }}" />
+    <link rel="stylesheet" href="{{ asset("ace/assets/css/font-awesome.css") }}" />
+    <link rel="stylesheet" href="{{ asset("ace/assets/css/ace-fonts.css") }}" />
+    <link rel="stylesheet" href="{{ asset("ace/assets/css/ace.css") }}" />
+    <link rel="stylesheet" href="{{ asset("ace/assets/css/ace-rtl.css") }}" />
+</head>
+<body>
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{{ form_start(form) }}
+<div class="container">
+    <h1>Paralake Police Department<br><small>Serve and Protect</small></h1>
+    <div class="well">
+        <div id="fuelux-wizard-container">
+            <div>
+                <ul class="steps">
+                    <li data-step="1" class="active">
+                        <span class="step">1</span>
+                        <span class="title">Basic Information</span>
+                    </li>
+
+                    <li data-step="2">
+                        <span class="step">2</span>
+                        <span class="title">Motivation</span>
+                    </li>
+
+                    <li data-step="3">
+                        <span class="step">3</span>
+                        <span class="title">Experience</span>
+                    </li>
+
+                    <li data-step="4">
+                        <span class="step">4</span>
+                        <span class="title">Concerns</span>
+                    </li>
+
+                    <li data-step="5">
+                        <span class="step">5</span>
+                        <span class="title">Confirmation</span>
+                    </li>
+                </ul>
+            </div>
+
+            <hr />
+
+            <div class="step-content pos-rel">
+                <div class="step-pane active" data-step="1">
+                    <b>All fields in this step are required.</b><br>
+                    <label for="form_forumname">Forum name:</label>
+                   {{ form_widget(form.forumname) }}
+                    <label for="form_steamname">Steam name:</label>
+                    {{ form_widget(form.steamname) }}
+                    <label for="form_steamid">Steam ID:</label>
+                    {{ form_widget(form.steamid) }}
+                    <label for="form_rpname">In-Character name:</label>
+                    {{ form_widget(form.rpname) }}
+                    <label for="form_rpname">Email address:</label>
+                    {{ form_widget(form.email) }}
+                    <label for="form_country">Country:</label>
+                    {{ form_widget(form.country) }}
+                    <label for="form_dob">Date of birth:</label>
+                    {{ form_widget(form.dob) }}
+                    <label for="form_microphone">Do you own a (well) functioning microphone?</label>
+                    {{ form_widget(form.microphone) }}
+                </div>
+                <div class="step-pane" data-step="2">
+                    <b>All fields in this step are required.</b><br>
+                    <label for="form_reasonApply">Why are you applying to join the PLPD?</label>
+                    {{ form_widget(form.reasonApply) }}
+                    <label for="form_reasonChoose">Why should we choose you over other applicants?</label>
+                    {{ form_widget(form.reasonChoose) }}
+                </div>
+
+                <div class="step-pane" data-step="3">
+                    <b>All fields in this step are required.</b><br>
+                    <label for="form_experience">Do you have any experience in law enforcement roleplay outside of PERPHeads? If so, please list.</label>
+                    {{ form_widget(form.experience) }}
+                    <label for="form_skills">What skills do you have that would benefit you as a Senior Officer of the PLPD?</label>
+                    {{ form_widget(form.skills) }}
+                </div>
+
+                <div class="step-pane" data-step="4">
+                    <b>None of the fields in this step is required.</b><br>
+                    <label for="form_concerns">Do you have any concerns you would like to express to the PTO reviewing your application?</label>
+                    {{ form_widget(form.concerns) }}
+                    <label for="form_information">Would you like to provide us with any additional information related to your application?</label>
+                    {{ form_widget(form.information) }}
+                </div>
+
+                <div class="step-pane" data-step="5">
+                    <div class="center">
+                        <h3 class="green">Almost there!</h3>
+                        You are almost ready to apply! Before you click "Finish" please make sure all fields are filled in.<br>
+                        <b>You can not change these after submitting the application.</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <div class="wizard-actions">
+            <button class="btn btn-prev" onclick="return false;">
+                <i class="ace-icon fa fa-arrow-left"></i>
+                Prev
+            </button>
+
+            <button class="btn btn-success btn-next" onclick="return false;" data-last="Finish">
+                Next
+                <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<button class="hidden submitApp" type="submit"></button>
+{{ form_end(form) }}
+<script src="{{ asset("ace/assets/js/jquery.js") }}"></script>
+<script src="{{ asset("ace/assets/js/bootstrap.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/elements.scroller.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/elements.colorpicker.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/elements.fileinput.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/elements.typeahead.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/elements.wysiwyg.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/elements.spinner.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/elements.treeview.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/elements.wizard.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/elements.aside.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.ajax-content.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.touch-drag.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.sidebar.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.sidebar-scroll-1.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.submenu-hover.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.widget-box.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.settings.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.settings-rtl.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.settings-skin.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.widget-on-reload.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.searchbox-autocomplete.js") }}"></script>
+<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+<script src="{{ asset("ace/assets/js/ace/elements.onpage-help.js") }}"></script>
+<script src="{{ asset("ace/assets/js/ace/ace.onpage-help.js") }}"></script>
+<script src="{{ asset("ace/docs/assets/js/rainbow.js") }}"></script>
+<script src="{{ asset("ace/docs/assets/js/language/generic.js") }}"></script>
+<script src="{{ asset("ace/docs/assets/js/language/html.js") }}"></script>
+<script src="{{ asset("ace/docs/assets/js/language/css.js") }}"></script>
+<script src="{{ asset("ace/docs/assets/js/language/javascript.js") }}"></script>
+<script src="{{ asset("ace/assets/js/fuelux/fuelux.wizard.js") }}"></script>
+<script>var $validation = false;
+    $('#fuelux-wizard-container')
+            .ace_wizard({
+                //step: 2 //optional argument. wizard will jump to step "2" at first
+                //buttons: '.wizard-actions:eq(0)'
+            })
+            .on('actionclicked.fu.wizard' , function(e, info){
+                if(info.step == 1 && $validation) {
+                    if(!$('#validation-form').valid()) e.preventDefault();
+                }
+            })
+            //.on('changed.fu.wizard', function() {
+            //})
+            .on('finished.fu.wizard', function(e) {
+                $(".submitApp").trigger("click");
+            }).on('stepclick.fu.wizard', function(e){
+        //e.preventDefault();//this will prevent clicking and selecting steps
+    });
+
+
+    //jump to a step
+    /**
+     var wizard = $('#fuelux-wizard-container').data('fu.wizard')
+     wizard.currentStep = 3;
+     wizard.setState();
+     */
+
+    //determine selected step
+    //wizard.selectedItem().step
+</script>
+</body>
+</html>

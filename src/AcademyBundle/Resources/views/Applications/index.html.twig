@@ -1,0 +1,21 @@
+{% extends "@Academy/base.html.twig" %}
+
+{% block title %}PLPD - Applications{% endblock %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>
+            Applications
+            {% if status != true %}
+                <span class="pull-right">
+                <a href="{{ path("academy_applications_open") }}" class="btn btn-success btn-xs"><i class="fa fa-unlock"></i> Open applications</a>
+            </span>
+            {% else %}
+                <span class="pull-right">
+                <a href="{{ path("academy_applications_close") }}" class="btn btn-danger btn-xs"><i class="fa fa-lock"></i> Close applications</a>
+            </span>
+            {% endif %}
+        </h1>
+    </div>
+{{ grid|raw }}
+{% endblock %}
